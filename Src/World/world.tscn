@@ -1,0 +1,138 @@
+[gd_scene load_steps=24 format=3 uid="uid://nhwrq1tp4m8s"]
+
+[ext_resource type="PackedScene" uid="uid://cq11sd47ijqoi" path="res://Src/Player/Player.tscn" id="1_61rdv"]
+[ext_resource type="PackedScene" uid="uid://q7mw113084qh" path="res://Src/Obstacles/box.tscn" id="2_3wx4x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bg2ge"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8pidt"]
+seed = 216
+frequency = 0.094
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_22x4c"]
+seamless = true
+noise = SubResource("FastNoiseLite_8pidt")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ropka"]
+seed = 216
+frequency = 0.094
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1udgq"]
+noise = SubResource("FastNoiseLite_ropka")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2gvbt"]
+albedo_color = Color(0.239216, 0.376471, 0.247059, 1)
+albedo_texture = SubResource("NoiseTexture2D_22x4c")
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_1udgq")
+
+[sub_resource type="BoxMesh" id="BoxMesh_48a3y"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5ratn"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_704gr"]
+seamless = true
+noise = SubResource("FastNoiseLite_5ratn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gbddm"]
+transparency = 1
+albedo_texture = SubResource("NoiseTexture2D_704gr")
+albedo_texture_force_srgb = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_dfe6g"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_11so1"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_5s6ov"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_seogb"]
+radius = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_igi5c"]
+size = Vector3(7, 7, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_omoi7"]
+size = Vector3(7, 7, 7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e6mdr"]
+size = Vector3(3, 3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f7kok"]
+size = Vector3(3, 3, 3)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pxlam"]
+ground_bottom_color = Color(0.435294, 0.698039, 0.513726, 1)
+ground_energy_multiplier = 0.1
+
+[sub_resource type="Sky" id="Sky_84ici"]
+sky_material = SubResource("ProceduralSkyMaterial_pxlam")
+
+[sub_resource type="Environment" id="Environment_lqjic"]
+background_mode = 2
+sky = SubResource("Sky_84ici")
+
+[node name="World" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_bg2ge")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_2gvbt")
+mesh = SubResource("BoxMesh_48a3y")
+
+[node name="Player" parent="." instance=ExtResource("1_61rdv")]
+transform = Transform3D(-0.999431, 0, 0.0337309, 0, 1, 0, -0.0337309, 0, -0.999431, 7.48947, 12.6442, -4.47044)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.900167, 0.435545, 0, -0.435545, 0.900167, 0, 10.2584, 41.8401)
+
+[node name="Box" parent="." groups=["moveable"] instance=ExtResource("2_3wx4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.67245, 3.57045, 0)
+
+[node name="MeshInstance3D" parent="Box" index="0"]
+material_override = SubResource("StandardMaterial3D_gbddm")
+mesh = SubResource("SphereMesh_dfe6g")
+
+[node name="CollisionShape3D" parent="Box" index="1"]
+shape = SubResource("SphereShape3D_11so1")
+
+[node name="Box4" parent="." groups=["moveable"] instance=ExtResource("2_3wx4x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5938, 7.21138, 0.672507)
+mass = 2.0
+
+[node name="MeshInstance3D" parent="Box4" index="0"]
+material_override = SubResource("StandardMaterial3D_gbddm")
+mesh = SubResource("SphereMesh_5s6ov")
+
+[node name="CollisionShape3D" parent="Box4" index="1"]
+shape = SubResource("SphereShape3D_seogb")
+
+[node name="Box2" type="RigidBody3D" parent="." groups=["moveable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.13467, 5.65923, -5.57581)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box2"]
+mesh = SubResource("BoxMesh_igi5c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2"]
+shape = SubResource("BoxShape3D_omoi7")
+
+[node name="Box3" type="RigidBody3D" parent="." groups=["moveable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.695235, 3.57045, -5.57581)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box3"]
+mesh = SubResource("BoxMesh_e6mdr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box3"]
+shape = SubResource("BoxShape3D_f7kok")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lqjic")
+
+[editable path="Box"]
+[editable path="Box4"]
