@@ -44,8 +44,8 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseMotion:
 		rotation_degrees.y -= event.relative.x * mouse_sensitivity
-		#camera_pivot.rotation_degrees.x -= event.relative.y * mouse_sensitivity
-		#camera_pivot.rotation_degrees.x = clamp(camera_pivot.rotation_degrees.x, min_pitch, max_pitch)
+		camera_pivot.rotation_degrees.x -= event.relative.y * mouse_sensitivity
+		camera_pivot.rotation_degrees.x = clamp(camera_pivot.rotation_degrees.x, min_pitch, max_pitch)
 	
 	if event is InputEventMouseButton:
 		if event.is_pressed():
